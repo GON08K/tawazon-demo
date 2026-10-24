@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TAWAZON — توازن</title>
+<style>
+:root{--bg:#f4f7fa;--card:#fff;--tx:#0b1f33;--mu:#506070;--nav:#0b2540;--ac:#0a7f8a;--bd:#dbe4ec;--ok:#15803d;--wa:#a16207;--er:#b91c1c;--okb:#dcfce7;--wab:#fef3c7;--erb:#fee2e2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07121f;--card:#0f2238;--tx:#e6eef6;--mu:#9fb2c4;--ac:#22d3ee;--bd:#1e3550;--ok:#4ade80;--wa:#fbbf24;--er:#f87171;--okb:#12351f;--wab:#3a2e0c;--erb:#3d1515}}
+:root[data-theme=dark]{--bg:#07121f;--card:#0f2238;--tx:#e6eef6;--mu:#9fb2c4;--ac:#22d3ee;--bd:#1e3550;--ok:#4ade80;--wa:#fbbf24;--er:#f87171;--okb:#12351f;--wab:#3a2e0c;--erb:#3d1515}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+a{color:var(--ac)}:focus-visible{outline:3px solid #22d3ee;outline-offset:2px}
+.demo{background:#fef3c7;color:#713f12;text-align:center;font-size:13px;padding:6px 10px}
+header{background:var(--nav);color:#fff;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;gap:8px;align-items:center;font-weight:700;color:#fff;text-decoration:none;font-size:18px}
+nav{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0}
+nav a{color:#cfe3f1;text-decoration:none;padding:8px 12px;border-radius:8px;white-space:nowrap;min-height:40px}
+nav a.on{background:#134566;color:#fff}
+.tools{display:flex;gap:6px}
+button,select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;min-height:44px}
+button{cursor:pointer}button.p{background:var(--ac);color:#fff;border-color:var(--ac)}:root[data-theme=dark] button.p,:root:not([data-theme=light]) button.p{color:#04202a}
+header button{background:#134566;color:#fff;border-color:#1d5a82;min-height:40px}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:.3em 0}h2{font-size:19px;margin:0 0 10px}h3{font-size:16px;margin:0 0 6px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(11,37,64,.07);min-width:0}
+.kpi b{display:block;font-size:28px}.mu{color:var(--mu);font-size:14px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600}
+.low{background:var(--okb);color:var(--ok)}.mid{background:var(--wab);color:var(--wa)}.high{background:var(--erb);color:var(--er)}.na{background:var(--bd);color:var(--mu)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.row>*{flex:1 1 150px}
+.two{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-bottom:12px}
+svg.ch{width:100%;height:auto;display:block}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px}.bar span:first-child{width:38%;flex:none}.bar i{display:block;height:12px;border-radius:6px;background:var(--ac);min-width:2px}.bar em{font-style:normal;font-weight:600}
+.al{border-inline-start:4px solid var(--bd)}.al.new{border-inline-start-color:var(--er)}.al.done{opacity:.7}
+.hero{background:var(--nav);color:#fff;border-radius:18px;padding:28px 20px;margin-bottom:14px}.hero p{color:#cfe3f1;max-width:60ch}
+.hero .p{font-size:17px;padding:12px 22px}
+ul.t{list-style:none;padding:0;margin:0}ul.t li{padding:8px 0;border-bottom:1px solid var(--bd)}
+textarea{width:100%}
+</style></head><body>
+<div class="demo" id="demo"></div>
+<header><a class="brand" href="#/home"><svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0b2540" stroke="#22d3ee"/><path d="M6 12h20" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/><path d="M16 12v11M11 24h10" stroke="#5eead4" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="16" r="3" fill="#0e9aa7"/><circle cx="24" cy="16" r="3" fill="#0e9aa7"/></svg><span>TAWAZON · توازن</span></a>
+<nav id="nav" aria-label="main"></nav><div class="tools"><button id="lg" onclick="setLang()"></button><button id="th" onclick="setTheme()" aria-label="theme">◐</button></div></header>
+<main id="app"></main>
+<script>
+// ===== config (illustrative, easy to change) =====
+const W={att:.30,asm:.35,asg:.20,trd:.15},TH=[30,60],FLAG=.35,UPDATED="2026-10-20";
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const avg=a=>{a=a.filter(v=>v!=null);return a.length?a.reduce((s,v)=>s+v,0)/a.length:null};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch{return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+let lang=ld("tz_lang","ar"),theme=ld("tz_theme","auto"),ST=ld("tz_state",{rev:{},recs:{},notes:[]}),F={q:"",p:"",t:"",l:"",per:8,rp:"",ap:"",as:"",cr:0};
+const L=(a,e)=>lang=="ar"?a:e;
+// ===== demo data (fictional) =====
+const PROG=[{ar:"علوم الحاسب",en:"Computer Science"},{ar:"إدارة الأعمال",en:"Business Administration"},{ar:"الهندسة",en:"Engineering"},{ar:"العلوم الصحية",en:"Health Sciences"}];
+const RAW=[["S01","ليلى الحربي","Layla Harbi",0,3,95,.2,82,1,96,0],["S02","سلمان العتيبي","Salman Otaibi",0,3,88,-3,78,-5,85,-5],["S03","نورة القحطاني","Noura Qahtani",1,2,92,0,70,2,90,1],["S04","فهد الزهراني","Fahd Zahrani",2,4,80,-2.5,66,-4,75,-6],["S05","ريم السبيعي","Reem Subaie",3,1,97,0,88,.5,98,0],["S06","خالد الغامدي","Khalid Ghamdi",1,4,74,-1,60,-3,65,-4],["S07","مها الشهري","Maha Shehri",0,5,90,.5,72,1.5,88,0],["S08","عمر الدوسري","Omar Dosari",2,3,85,-1,74,-2,80,-3],["S09","هند المطيري","Hind Mutairi",3,5,93,.3,79,0,91,0],["S10","يوسف البلوي","Yousef Balawi",1,1,70,-2,55,-4,60,-5],["S11","أمل الحازمي","Amal Hazmi",0,2,89,0,68,3,84,2],["S12","ماجد العسيري","Majed Asiri",2,5,91,0,80,1,93,0],["S13","دانة الجهني","Dana Juhani",3,3,82,-.8,71,-1,70,-1],["S14","ناصر الشمري","Nasser Shammari",1,6,96,0,85,0,97,0],["S15","سارة باعشن","Sarah Baashen",2,2,78,-1.5,62,-1,null,0],["S16","تركي الرشيدي","Turki Rashidi",0,4,86,.4,76,.5,87,.5]];
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+// ===== scoring engine (transparent, rules-based; NOT a trained ML model) =====
+function half(a){const n=Math.ceil(a.length/2);return a.length<2?null:avg(a.slice(0,n))-avg(a.slice(-n))}
+function score(s){
+ const last=a=>avg(a.slice(-2)),att=last(s.att),asm=last(s.sc),asg=last(s.asg);
+ const dr=[half(s.sc),half(s.att)].filter(v=>v!=null),d=dr.length?avg(dr):null;
+ const c={att:att==null?null:clamp((90-att)/30),asm:asm==null?null:clamp((75-asm)/30),asg:asg==null?null:clamp((90-asg)/40),trd:d==null?null:clamp(d/15)};
+ let sum=0,ws=0;for(const k in W)if(c[k]!=null){sum+=W[k]*c[k];ws+=W[k]}   // missing data: weight re-distributed
+ const sc=ws?Math.round(100*sum/ws):null,fl=Object.keys(c).filter(k=>c[k]!=null&&c[k]>=FLAG);
+ return{score:sc,flags:fl,c,v:{att,asm,asg,d},dir:d==null?"flat":d<=-3?"up":d>=3?"down":"flat",lv:sc==null?"na":sc<TH[0]?"low":sc<TH[1]?"mid":"high"}}
+let S=[];
+function build(){S=RAW.map((r,i)=>{const R=rng(i*97+13),n=()=>(R()-.5)*4;
+ const s={id:r[0],ar:r[1],en:r[2],p:r[3],sem:r[4],att:[...Array(8)].map((_,j)=>Math.round(clamp(r[5]+r[6]*j+n(),30,100,))),sc:[...Array(6)].map((_,j)=>Math.round(clamp(r[7]+r[8]*j+n()*1.5,20,100))),asg:r[9]==null?[]:[...Array(8)].map((_,j)=>Math.round(clamp(r[9]+r[10]*j+n(),20,100)))};
+ s.att=s.att.map(v=>Math.min(v,100));s.sc=s.sc.map(v=>Math.min(v,100));s.asg=s.asg.map(v=>Math.min(v,100));
+ s.gpa=(avg(s.sc)/100*4).toFixed(2);Object.assign(s,score(s));return s});
+ S.forEach((s,i)=>{s.name=s.ar;});}
+build();
+const nm=s=>L(s.ar,s.en),pg=p=>L(PROG[p].ar,PROG[p].en);
+const PL=lv=>({low:L("متابعة اعتيادية","Routine monitoring"),mid:L("يُوصى بالمتابعة","Follow-up recommended"),high:L("مراجعة ذات أولوية","Priority review"),na:L("بيانات غير كافية","Insufficient data")}[lv]);
+const badge=s=>`<span class="badge ${s.lv}">${s.score==null?"—":s.score} · ${PL(s.lv)}</span>`;
+const DIR=d=>({up:L("↑ يتحسن","↑ Improving"),down:L("↓ يتراجع","↓ Declining"),flat:L("→ مستقر","→ Stable")}[d]);
+const FN={att:L("الحضور","Attendance"),asm:L("نتائج التقييمات","Assessments"),asg:L("إنجاز الواجبات","Assignments"),trd:L("اتجاه الأداء","Trend")};
+function why(s,k){const v=s.v,r=x=>Math.round(x);return{
+ att:L(`معدل الحضور الأخير ${r(v.att)}% وهو أقل من الحد المحدد (90%).`,`Recent attendance is ${r(v.att)}%, below the configured 90% threshold.`),
+ asm:L(`متوسط التقييمات الأخيرة ${r(v.asm)} وهو أقل من 75.`,`Recent assessment average is ${r(v.asm)}, below 75.`),
+ asg:L(`نسبة إنجاز الواجبات ${r(v.asg)}% وهي أقل من 90%.`,`Assignment completion is ${r(v.asg)}%, below 90%.`),
+ trd:L(`تراجعت المؤشرات بحوالي ${r(v.d)} نقطة بين النصف الأول والأخير من الفترة.`,`Indicators fell by about ${r(v.d)} points between the first and second half of the period.`)}[k]}
+const RK={att:{d:7,a:["اتصال داعم لتفقد حال الطالب","Supportive check-in with the student"]},asm:{d:14,a:["دعم أكاديمي أو تدريس خصوصي في المادة","Tutoring or subject-specific academic support"]},asg:{d:10,a:["تخطيط عبء العمل وتذكيرات بالواجبات","Workload planning and assignment reminders"]},multi:{d:5,a:["مراجعة شاملة من المرشد الأكاديمي","Comprehensive advisor review"]}};
+const recs=s=>{const k=s.flags.filter(f=>f!="trd").map(f=>f);if(s.flags.length>=2)k.push("multi");return k};
+const SS=()=>({sug:L("مقترح","Suggested"),prog:L("قيد التنفيذ","In progress"),done:L("مكتمل","Completed")});
+const rst=(s,k)=>ST.recs[s.id+k]||"sug";
+function alerts(){const out=[];S.forEach((s,i)=>{if(s.score==null||s.score<TH[0])return;s.flags.forEach((f,j)=>out.push({id:s.id+"-"+f,s,f,date:"2026-10-"+String(10+((i+j)%11)).padStart(2,"0"),txt:why(s,f)}))});return out.sort((a,b)=>b.date.localeCompare(a.date))}
+const acts=()=>[...ST.notes.map(n=>({...n})),...S.filter(s=>s.score>=TH[0]).slice(0,4).map((s,i)=>({sid:s.id,date:"2026-10-"+(12+i),t:L("ملاحظة تجريبية: تم اقتراح متابعة داعمة (بيانات خيالية).","Demo note: supportive follow-up suggested (fictional data)."),seed:1}))].sort((a,b)=>b.date.localeCompare(a.date));
+// ===== charts =====
+function line(series,labels,lo,hi,desc){const w=320,h=140,px=30,pt=10,pb=22,X=i=>px+(w-px-8)*(labels.length<2?0:i/(labels.length-1)),Y=v=>pt+(h-pt-pb)*(1-(v-lo)/(hi-lo));
+ let g=[lo,(lo+hi)/2,hi].map(v=>`<line x1="${px}" x2="${w-8}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--bd)"/><text x="${px-4}" y="${Y(v)+4}" font-size="10" text-anchor="end" fill="var(--mu)">${Math.round(v)}</text>`).join("");
+ g+=labels.map((l,i)=>`<text x="${X(i)}" y="${h-6}" font-size="10" text-anchor="middle" fill="var(--mu)">${l}</text>`).join("");
+ series.forEach(se=>{const pts=se.v.map((v,i)=>v==null?null:[X(i),Y(v)]).filter(Boolean);if(pts.length)g+=`<polyline fill="none" stroke="${se.c}" stroke-width="2.5" points="${pts.map(p=>p.join(",")).join(" ")}"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${se.c}"/>`).join("")});
+ const lg=series.map(se=>`<span style="color:${se.c}">●</span> ${se.l}`).join(" &nbsp; ");
+ return`<svg class="ch" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(desc)}" direction="ltr">${g}</svg><div class="mu">${lg}</div>`}
+function bars(rows){const m=Math.max(1,...rows.map(r=>r[1]));return rows.map(r=>`<div class="bar"><span>${r[0]}</span><i style="width:${r[1]/m*50}%;${r[2]?"background:"+r[2]:""}"></i><em>${r[1]}</em></div>`).join("")}
+const wk=n=>[...Array(n)].map((_,i)=>L("أ","W")+(i+1));
+// ===== views =====
+const V={};
+V.home=()=>`<section class="hero"><h1>TAWAZON · توازن</h1><p><b>${L("توازن اليوم، نجاح الغد.","Balance Today. Succeed Tomorrow.")}</b></p><p>${L("منصة مساندة أكاديمية مبكرة تساعد المرشدين على رصد الطلاب الذين قد يحتاجون دعماً إضافياً عبر مؤشرات شفافة وتوصيات داعمة، مع بقاء القرار للإنسان.","An early academic-support platform that helps advisors notice students who may need extra support through transparent indicators and supportive recommendations, with humans making every decision.")}</p><a href="#/dashboard"><button class="p">${L("استكشف النسخة التجريبية","Explore Demo")}</button></a></section>
+<div class="two"><div class="card"><h2>${L("المشكلة","The problem")}</h2><p>${L("قد لا تُكتشف الصعوبات الأكاديمية إلا بعد تراجع كبير، وقد يفتقر المرشد إلى رؤية موحدة للحضور والتقييمات والواجبات.","Academic difficulty may be noticed only after a large decline, and advisors often lack one view of attendance, assessments and assignments.")}</p></div>
+<div class="card"><h2>${L("كيف تعمل","How it works")}</h2><ol><li>${L("جمع مؤشرات الحضور والتقييمات والواجبات","Gather attendance, assessment and assignment indicators")}</li><li>${L("حساب درجة أولوية الدعم (0–100) بقواعد معلنة","Compute a 0–100 support-priority score with published rules")}</li><li>${L("شرح كل تنبيه واقتراح خطوات داعمة","Explain each alert and suggest supportive steps")}</li><li>${L("يراجع المرشد ويقرر","The advisor reviews and decides")}</li></ol></div></div>
+<div class="card"><h2>${L("الفوائد","Benefits")}</h2><p>${L("رؤية موحدة، تنبيهات مفسَّرة، تدخل مبكر داعم، وخصوصية وعدالة: لا تُستخدم أي خصائص حساسة كمدخلات.","One view, explained alerts, earlier supportive action, and fairness: no sensitive characteristics are used as inputs.")}</p><p class="mu"><b>${L("تنبيه:","Notice:")}</b> ${L("هذه نسخة توضيحية ببيانات خيالية بالكامل، ونظام الدرجات قائم على قواعد وليس نموذج تعلّم آلي مدرَّب.","This is a demonstration with entirely fictional data. Scoring is rules-based, not a trained machine-learning model.")}</p></div>`;
+V.dashboard=()=>{const n=F.per,att=S.map(s=>s.v.att),rev=S.filter(s=>s.score>=TH[0]).length,imp=S.filter(s=>s.dir=="up").length,dec=S.filter(s=>s.dir=="down").length;
+ const mean=(k,i)=>Math.round(avg(S.map(s=>s[k][i])));const idx=[...Array(8).keys()].slice(-n),sidx=[...Array(6).keys()].slice(-(n==4?3:6));
+ const dist=["low","mid","high"].map(l=>[PL(l),S.filter(s=>s.lv==l).length,`var(--${l=="low"?"ok":l=="mid"?"wa":"er"})`]);
+ const al=alerts().filter(a=>!ST.rev[a.id]).slice(0,5);
+ return`<h1>${L("لوحة المتابعة","Dashboard")}</h1><div class="row"><label>${L("الفترة","Period")} <select onchange="F.per=+this.value;R()"><option value="8" ${n==8?"selected":""}>${L("٨ أسابيع","8 weeks")}</option><option value="4" ${n==4?"selected":""}>${L("٤ أسابيع","4 weeks")}</option></select></label></div>
+<div class="kpis"><div class="card kpi"><span class="mu">${L("إجمالي الطلاب (تجريبي)","Total demo students")}</span><b>${S.length}</b></div><div class="card kpi"><span class="mu">${L("يحتاجون مراجعة","Requiring review")}</span><b>${rev}</b></div><div class="card kpi"><span class="mu">${L("أداء يتحسن","Improving")}</span><b>${imp}</b></div><div class="card kpi"><span class="mu">${L("أداء يتراجع","Declining")}</span><b>${dec}</b></div><div class="card kpi"><span class="mu">${L("متوسط الحضور","Average attendance")}</span><b>${Math.round(avg(att))}%</b></div></div>
+<div class="two"><div class="card"><h2>${L("الحضور وإنجاز الواجبات","Attendance & assignments")}</h2>${line([{v:idx.map(i=>mean("att",i)),c:"#0e9aa7",l:L("الحضور","Attendance")},{v:idx.map(i=>{const a=avg(S.map(s=>s.asg[i]));return a==null?null:Math.round(a)}),c:"#d97706",l:L("الواجبات","Assignments")}],wk(8).filter((_,i)=>idx.includes(i)),40,100,L("اتجاه متوسط الحضور وإنجاز الواجبات","Trend of average attendance and assignment completion"))}</div>
+<div class="card"><h2>${L("متوسط التقييمات","Average assessments")}</h2>${line([{v:sidx.map(i=>mean("sc",i)),c:"#2563eb",l:L("التقييمات","Assessments")}],sidx.map(i=>"A"+(i+1)),40,100,L("اتجاه متوسط نتائج التقييمات","Trend of average assessment scores"))}</div></div>
+<div class="two"><div class="card"><h2>${L("توزيع أولويات الدعم","Support priorities")}</h2>${bars(dist)}</div>
+<div class="card"><h2>${L("آخر التنبيهات","Recent alerts")}</h2>${al.length?al.map(a=>`<p><a href="#/s/${a.s.id}">${a.s.id}</a> · ${FN[a.f]} <span class="mu">${a.date}</span><br>${a.txt}</p>`).join(""):`<p class="mu">${L("لا توجد تنبيهات جديدة.","No new alerts.")}</p>`}</div></div>
+<div class="card"><h2>${L("أنشطة المرشدين الأخيرة","Recent advisor activity")}</h2><ul class="t">${acts().slice(0,5).map(a=>`<li><a href="#/s/${a.sid}">${a.sid}</a> <span class="mu">${a.date}</span><br>${a.seed?a.t:esc(a.t)}</li>`).join("")}</ul></div>`};
+function filt(){const q=F.q.trim().toLowerCase();return S.filter(s=>(!q||(s.id+s.ar+s.en).toLowerCase().includes(q))&&(F.p===""||s.p==F.p)&&(!F.t||s.dir==F.t)&&(!F.l||s.lv==F.l))}
+function list(){const r=filt();return r.length?`<p class="mu">${r.length} / ${S.length}</p><div class="grid">${r.map(s=>`<a class="card" style="text-decoration:none;color:inherit" href="#/s/${s.id}"><b>${esc(nm(s))}</b> <span class="mu">${s.id}</span><br><span class="mu">${pg(s.p)} · ${L("الفصل","Sem")} ${s.sem}</span><br>${badge(s)}<br><span class="mu">${L("الحضور","Att")} ${Math.round(s.v.att)}% · ${L("الواجبات","Asg")} ${s.v.asg==null?"—":Math.round(s.v.asg)+"%"} · ${L("التقييم","Assess")} ${Math.round(s.v.asm)}<br>GPA ${s.gpa}/4 · ${DIR(s.dir)}<br>${UPDATED}</span></a>`).join("")}</div>`:`<div class="card">${L("لا نتائج مطابقة. جرّب تغيير البحث أو المرشحات.","No matching students. Try changing the search or filters.")}</div>`}
+const sel=(k,opts,lab)=>`<select aria-label="${lab}" onchange="F.${k}=this.value;U()"><option value="">${lab}</option>${opts.map(o=>`<option value="${o[0]}" ${F[k]==o[0]&&F[k]!==""?"selected":""}>${o[1]}</option>`).join("")}</select>`;
+V.students=()=>`<h1>${L("دليل الطلاب","Students")}</h1><div class="row"><input type="search" aria-label="${L("بحث","Search")}" placeholder="${L("ابحث بالاسم أو الرقم","Search name or ID")}" value="${esc(F.q)}" oninput="F.q=this.value;U()">${sel("p",PROG.map((p,i)=>[i,pg(i)]),L("كل البرامج","All programs"))}${sel("t",[["up",DIR("up")],["flat",DIR("flat")],["down",DIR("down")]],L("كل الاتجاهات","All trends"))}${sel("l",["low","mid","high","na"].map(l=>[l,PL(l)]),L("كل الأولويات","All priorities"))}</div><div id="list">${list()}</div><p class="mu">${L("GPA توضيحي على مقياس 4.0 محسوب من متوسط التقييمات. جميع الأسماء خيالية.","Illustrative GPA on a 4.0 scale derived from assessment average. All names are fictional.")}</p>`;
+V.s=id=>{const s=S.find(x=>x.id==id);if(!s)return`<div class="card">${L("الطالب غير موجود.","Student not found.")} <a href="#/students">${L("العودة للدليل","Back to students")}</a></div>`;
+ const rk=recs(s),notes=[...ST.notes.filter(n=>n.sid==id),...acts().filter(a=>a.seed&&a.sid==id)].sort((a,b)=>b.date.localeCompare(a.date));
+ return`<p><a href="#/students">← ${L("الدليل","Students")}</a> · <a href="#/dashboard">${L("اللوحة","Dashboard")}</a></p><h1>${esc(nm(s))} <span class="mu">${s.id}</span></h1><p>${pg(s.p)} · ${L("الفصل","Semester")} ${s.sem} · ${badge(s)} · ${DIR(s.dir)}</p>
+<div class="kpis"><div class="card kpi"><span class="mu">${L("الحضور","Attendance")}</span><b>${Math.round(s.v.att)}%</b></div><div class="card kpi"><span class="mu">${L("التقييمات","Assessments")}</span><b>${Math.round(s.v.asm)}</b></div><div class="card kpi"><span class="mu">${L("الواجبات","Assignments")}</span><b>${s.v.asg==null?"—":Math.round(s.v.asg)+"%"}</b></div><div class="card kpi"><span class="mu">GPA /4</span><b>${s.gpa}</b></div></div>
+<div class="two"><div class="card"><h2>${L("الحضور","Attendance")}</h2>${line([{v:s.att,c:"#0e9aa7",l:"%"}],wk(8),30,100,L("اتجاه الحضور","Attendance trend"))}</div><div class="card"><h2>${L("سجل التقييمات","Assessment history")}</h2>${line([{v:s.sc,c:"#2563eb",l:""}],s.sc.map((_,i)=>"A"+(i+1)),20,100,L("سجل التقييمات","Assessment history"))}</div><div class="card"><h2>${L("إنجاز الواجبات","Assignments")}</h2>${s.asg.length?line([{v:s.asg,c:"#d97706",l:"%"}],wk(8),20,100,L("إنجاز الواجبات","Assignment completion")):`<p class="mu">${L("لا توجد بيانات واجبات لهذا الطالب؛ أُعيد توزيع وزنها في الحساب.","No assignment data for this student; its weight was redistributed in scoring.")}</p>`}</div></div>
+<div class="card"><h2>${L("مؤشرات التنبيه وتفسيرها","Warning indicators & explanations")}</h2>${s.flags.length?`<ul>${s.flags.map(f=>`<li><b>${FN[f]}:</b> ${why(s,f)}</li>`).join("")}</ul>`:`<p>${L("لا مؤشرات تستدعي التنبيه حالياً.","No indicators currently warrant an alert.")}</p>`}<p class="mu">${L("المؤشرات مشتقة من بيانات مرصودة، والدرجة محسوبة بقواعد، والتوصيات اقتراحات للمراجعة البشرية.","Indicators come from observed data, the score is rule-computed, and recommendations are suggestions for human review.")}</p></div>
+<div class="card" style="margin-top:12px"><h2>${L("خطوات الدعم المقترحة","Suggested support actions")}</h2>${rk.length?rk.map(k=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><b>${L(RK[k].a[0],RK[k].a[1])}</b><br><span class="mu">${L("السبب: ","Reason: ")}${k=="multi"?L("عدة مؤشرات مرتفعة معاً.","Several indicators are elevated together."):why(s,k)} · ${L("المتابعة خلال","Follow-up within")} ${RK[k].d} ${L("أيام","days")}</span><br><label>${L("الحالة","Status")} <select onchange="recSt('${s.id}','${k}',this.value)">${Object.entries(SS()).map(([v,t])=>`<option value="${v}" ${rst(s,k)==v?"selected":""}>${t}</option>`).join("")}</select></label></div>`).join(""):`<p class="mu">${L("لا توصيات حالياً.","No recommendations at the moment.")}</p>`}</div>
+<div class="card" style="margin-top:12px"><h2>${L("سجل المتابعة","Advisor timeline")}</h2><label for="nt">${L("أضف ملاحظة تجريبية (خيالية)","Add a fictional demo note")}</label><textarea id="nt" rows="2" maxlength="300"></textarea><button class="p" onclick="addNote('${s.id}')">${L("حفظ الملاحظة","Save note")}</button><p class="mu">${L("لا تُرسل أي رسائل فعلية للطلاب.","No real messages are sent to students.")}</p><ul class="t">${notes.map(n=>`<li><span class="mu">${n.date}</span><br>${n.seed?n.t:esc(n.t)}</li>`).join("")||`<li class="mu">${L("لا ملاحظات بعد.","No notes yet.")}</li>`}</ul></div>`};
+function alist(){let a=alerts().filter(x=>(!F.ap||x.s.lv==F.ap)&&(!F.as||(F.as=="new")==!ST.rev[x.id]));
+ return a.length?a.map(x=>{const r=ST.rev[x.id];return`<div class="card al ${r?"done":"new"}" style="margin-bottom:10px"><span class="badge ${r?"na":"high"}">${r?L("تمت المراجعة","Reviewed"):L("جديد","New")}</span> <span class="badge ${x.s.lv}">${PL(x.s.lv)}</span> <span class="mu">${x.date}</span><br><b>${FN[x.f]}</b> · <a href="#/s/${x.s.id}">${x.s.id} ${esc(nm(x.s))}</a><br>${x.txt}${r?"":`<br><button onclick="rv('${x.id}')">${L("تعليم كمُراجَع","Mark reviewed")}</button>`}</div>`}).join(""):`<div class="card">${L("لا تنبيهات مطابقة.","No matching alerts.")}</div>`}
+V.alerts=()=>`<h1>${L("مركز التنبيهات","Alerts center")}</h1><div class="row">${sel("ap",["mid","high"].map(l=>[l,PL(l)]),L("كل الأولويات","All priorities"))}${sel("as",[["new",L("جديد","New")],["rev",L("تمت المراجعة","Reviewed")]],L("كل الحالات","All statuses"))}</div><div id="list">${alist()}</div>`;
+V.reports=()=>{const r=S.filter(s=>F.rp===""||s.p==F.rp),b=(lo,hi)=>r.filter(s=>s.v.att>=lo&&s.v.att<hi).length;
+ const st={sug:0,prog:0,done:0};r.forEach(s=>recs(s).forEach(k=>st[rst(s,k)]++));
+ return`<h1>${L("التقارير والتحليلات","Reports & analytics")}</h1><div class="row">${sel("rp",PROG.map((p,i)=>[i,pg(i)]),L("كل البرامج","All programs"))}<button class="p" onclick="csv()">${L("تصدير CSV","Export CSV")}</button></div><div id="csvbox"></div>
+<div class="two"><div class="card"><h2>${L("توزيع الحضور","Attendance distribution")}</h2>${bars([["<70%",b(0,70)],["70–79%",b(70,80)],["80–89%",b(80,90)],["≥90%",b(90,101)]])}</div>
+<div class="card"><h2>${L("أولويات الدعم","Support priorities")}</h2>${bars(["low","mid","high","na"].map(l=>[PL(l),r.filter(s=>s.lv==l).length,`var(--${l=="low"?"ok":l=="mid"?"wa":l=="high"?"er":"mu"})`]))}</div>
+<div class="card"><h2>${L("حالة التدخلات","Intervention status")}</h2>${bars(Object.entries(SS()).map(([k,t])=>[t,st[k]]))}</div>
+<div class="card"><h2>${L("ملخص التقييمات والواجبات","Assessments & assignments")}</h2><p>${L("متوسط التقييمات الأخيرة","Recent assessment average")}: <b>${r.length?Math.round(avg(r.map(s=>s.v.asm))):"—"}</b><br>${L("متوسط إنجاز الواجبات","Average assignment completion")}: <b>${r.length&&avg(r.map(s=>s.v.asg))!=null?Math.round(avg(r.map(s=>s.v.asg)))+"%":"—"}</b></p></div></div><p class="mu">${L("الأرقام محسوبة من بيانات خيالية فقط ولا تمثل نتائج حقيقية أو تحسناً في الاستبقاء.","Figures are computed from fictional data only and do not represent real results or retention improvement.")}</p>`};
+V.settings=()=>`<h1>${L("الإعدادات","Settings")}</h1><div class="two"><div class="card"><h2>${L("اللغة والمظهر","Language & theme")}</h2><button onclick="setLang()">${L("English","العربية")}</button> <button onclick="setTheme()">${L("تبديل المظهر","Toggle theme")}</button></div>
+<div class="card"><h2>${L("بيانات العرض","Demo data")}</h2>${F.cr?`<p>${L("سيتم مسح التنبيهات المُراجَعة والملاحظات وحالات التدخل. متأكد؟","This clears reviewed alerts, notes and intervention statuses. Sure?")}</p><button class="p" onclick="doReset()">${L("نعم، أعد الضبط","Yes, reset")}</button> <button onclick="F.cr=0;R()">${L("إلغاء","Cancel")}</button>`:`<button onclick="F.cr=1;R()">${L("إعادة ضبط البيانات التجريبية","Reset demo data")}</button>`}</div></div>
+<div class="card"><h2>${L("عن المنصة","About")}</h2><ul><li>${L("الوضع: تجريبي، بيانات خيالية محلية.","Mode: demo, local fictional data.")}</li><li>${L("غير متصل بأي قاعدة بيانات أو مصادقة حقيقية أو خدمة ذكاء اصطناعي.","Not connected to any live database, real authentication or AI service.")}</li><li>${L(`الدرجة: أوزان توضيحية — حضور ${W.att*100}% · تقييمات ${W.asm*100}% · واجبات ${W.asg*100}% · اتجاه ${W.trd*100}%. الفئات: <${TH[0]} · <${TH[1]} · أعلى.`,`Score: illustrative weights — attendance ${W.att*100}% · assessments ${W.asm*100}% · assignments ${W.asg*100}% · trend ${W.trd*100}%. Bands: <${TH[0]}, <${TH[1]}, above.`)}</li><li>${L("قاعدة معلنة وليست نموذج تعلّم آلي، وليست احتمالاً للرسوب. لا تُستخدم خصائص حساسة.","A published rule set, not a machine-learning model and not a probability of failure. No sensitive characteristics are used.")}</li><li>${L("النشر الحقيقي يتطلب تفويضاً ومراجعة خصوصية واختبار أمان وتحقق مع الجامعة.","Real deployment needs authorization, privacy review, security testing and institutional validation.")}</li></ul></div>`;
+// ===== actions =====
+const save=()=>sv("tz_state",ST);
+function rv(id){ST.rev[id]=1;save();U()}
+function recSt(s,k,v){ST.recs[s+k]=v;save()}
+function addNote(id){const t=document.getElementById("nt").value.trim();if(!t)return;ST.notes.push({sid:id,date:"2026-10-24",t});save();R()}
+function doReset(){ST={rev:{},recs:{},notes:[]};F.cr=0;save();R()}
+function setLang(){lang=lang=="ar"?"en":"ar";sv("tz_lang",lang);R()}
+function setTheme(){theme=theme=="dark"?"light":"dark";sv("tz_theme",theme);R()}
+const cs=v=>{let s=v==null?"":String(v);if(/^[=+\-@\t\r]/.test(s))s="'"+s;return'"'+s.replace(/"/g,'""')+'"'};
+function csv(){const r=S.filter(s=>F.rp===""||s.p==F.rp),h=["id","name","program","semester","gpa_4","attendance","assignments","assessments","trend","priority_score","priority_band"];
+ const t=[h.join(","),...r.map(s=>[s.id,s.en,PROG[s.p].en,s.sem,s.gpa,Math.round(s.v.att),s.v.asg==null?"":Math.round(s.v.asg),Math.round(s.v.asm),s.dir,s.score,s.lv].map(cs).join(","))].join("\n");
+ document.getElementById("csvbox").innerHTML=`<div class="card" style="margin-bottom:12px"><label for="cv">${L("بيانات CSV (انسخها)","CSV data (copy it)")}</label><textarea id="cv" rows="5" readonly dir="ltr">${esc(t)}</textarea><button onclick="document.getElementById('cv').select();try{document.execCommand('copy')}catch(e){}">${L("نسخ","Copy")}</button> <a download="tawazon-demo.csv" href="data:text/csv;charset=utf-8,${encodeURIComponent("\ufeff"+t)}">${L("تنزيل","Download")}</a></div>`}
+// ===== shell/router =====
+function shell(){document.documentElement.lang=lang;document.documentElement.dir=lang=="ar"?"rtl":"ltr";
+ if(theme=="auto")document.documentElement.removeAttribute("data-theme");else document.documentElement.dataset.theme=theme;
+ document.getElementById("demo").textContent=L("وضع تجريبي: بيانات خيالية بالكامل ولا اتصال بقاعدة بيانات أو مصادقة حقيقية.","Demo mode: entirely fictional data; no live database or real authentication.");
+ document.getElementById("lg").textContent=L("English","العربية");
+ const h=location.hash.slice(2).split("/")[0]||"home",items=[["home",L("الرئيسية","Home")],["dashboard",L("اللوحة","Dashboard")],["students",L("الطلاب","Students")],["alerts",L("التنبيهات","Alerts")],["reports",L("التقارير","Reports")],["settings",L("الإعدادات","Settings")]];
+ document.getElementById("nav").innerHTML=items.map(i=>`<a href="#/${i[0]}" class="${h==i[0]||(h=="s"&&i[0]=="students")?"on":""}">${i[1]}</a>`).join("")}
+function R(){shell();const p=location.hash.slice(2).split("/"),k=p[0]||"home";document.getElementById("app").innerHTML=k=="s"?V.s(p[1]):(V[k]||V.home)();if(k!="s")window.scrollTo(0,0)}
+function U(){const l=document.getElementById("list");if(!l)return R();const k=location.hash.slice(2).split("/")[0];l.innerHTML=k=="alerts"?alist():list();if(k=="reports")R()}
+addEventListener("hashchange",R);R();
+</script></body></html>
